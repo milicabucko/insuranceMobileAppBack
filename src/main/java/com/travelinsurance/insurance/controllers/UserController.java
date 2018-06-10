@@ -1,5 +1,6 @@
 package com.travelinsurance.insurance.controllers;
 
+import com.travelinsurance.insurance.dtos.PasswordDto;
 import com.travelinsurance.insurance.models.User;
 import com.travelinsurance.insurance.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +36,21 @@ public class UserController {
             }
         }
         return new ResponseEntity<>((User) null, HttpStatus.OK);
+    }
+
+    @RequestMapping(
+            value = "/user/password",
+            method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> updatePassword (@RequestBody PasswordDto passwordDto){
+        User user = userService.findByUsernameAndPassword(passwordDto.getUsername(), passwordDto.getOldPassword());
+        if(user != null){
+            user.setPassword(passwordDto.getNewPassword());
+            userService.save(user);
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(false, HttpStatus.OK);
     }
 
 }
