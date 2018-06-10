@@ -25,10 +25,16 @@ public class User implements Serializable{
     private String userType;
 
 //    public enum USERTYPE {
-//        SELLER, BUYER
+//        SELLER, BUYER, INSURED
 //    }
 
     public User() {}
+
+    public User(String name, String surname, String userType) {
+        this.name = name;
+        this.surname = surname;
+        this.userType = userType;
+    }
 
     public Long getId() {
         return id;
