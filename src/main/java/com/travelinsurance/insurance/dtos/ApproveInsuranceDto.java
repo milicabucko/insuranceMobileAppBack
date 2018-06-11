@@ -8,6 +8,9 @@ public class ApproveInsuranceDto {
     private User seller;
     private boolean approve;
 
+    public ApproveInsuranceDto() {
+    }
+
     public ApproveInsuranceDto(Long id, User seller, boolean approve) {
         this.id = id;
         this.seller = seller;

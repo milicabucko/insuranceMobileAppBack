@@ -64,14 +64,14 @@ public class InsuranceController {
             value = "/insurance/approve",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Insurance>  approveInsurance(@RequestBody ApproveInsuranceDto approveInsuranceDto){
+    public ResponseEntity<Boolean>  approveInsurance(@RequestBody ApproveInsuranceDto approveInsuranceDto){
         Optional<Insurance> insurance = insuranceService.getById(approveInsuranceDto.getId());
         if(insurance != null){
             insurance.get().setApproved(approveInsuranceDto.isApprove());
             insurance.get().setSalesman(approveInsuranceDto.getSeller());
             insuranceService.save(insurance.get());
-            return new ResponseEntity<>(insurance.get(), HttpStatus.OK);
+            return new ResponseEntity<>(true, HttpStatus.OK);
         }
-        return new ResponseEntity<>((Insurance) null, HttpStatus.OK);
+        return new ResponseEntity<>(false, HttpStatus.OK);
     }
 }

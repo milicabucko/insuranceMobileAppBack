@@ -24,7 +24,8 @@ public class Insurance implements Serializable {
     @JoinColumn(name = "buyer_id")
     private User buyer;
 
-    @JoinColumn
+    @OneToOne
+    @JoinColumn(name = "seller_id")
     private User salesman;
 
     @OneToMany
