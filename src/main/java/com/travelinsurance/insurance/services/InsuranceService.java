@@ -24,4 +24,8 @@ public class InsuranceService {
     public Optional<Insurance> getById(Long id){
         return insuranceRepository.findById(id);
     }
+
+    public List<Insurance> findByBuyer_Username(String username) {
+        return insuranceRepository.findByBuyer_Username(username);
+    }
 }

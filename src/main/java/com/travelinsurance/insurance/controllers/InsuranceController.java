@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,4 +88,18 @@ public class InsuranceController {
         }
         return new ResponseEntity<>(false, HttpStatus.OK);
     }
+
+
+    @RequestMapping(
+            value = "/insurance/getAllInsurance/{username}",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Collection<Insurance>> findAllUsersInsurance (@PathVariable String username){
+
+        Collection<Insurance> allUserInsurance = insuranceService.findByBuyer_Username(username);
+
+        return new ResponseEntity<>(allUserInsurance, HttpStatus.OK);
+    }
+
+
 }

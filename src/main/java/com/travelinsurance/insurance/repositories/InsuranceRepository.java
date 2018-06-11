@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface InsuranceRepository extends JpaRepository<Insurance, Long> {
     List<Insurance> findAllByIsApproved(boolean b);
+
+    List<Insurance> findByBuyer_Username(String username);
 }
