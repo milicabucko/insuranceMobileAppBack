@@ -3,8 +3,10 @@ package com.travelinsurance.insurance.controllers;
 import com.travelinsurance.insurance.dtos.ApproveInsuranceDto;
 import com.travelinsurance.insurance.models.Insurance;
 import com.travelinsurance.insurance.models.User;
+import com.travelinsurance.insurance.models.Vehicle;
 import com.travelinsurance.insurance.services.InsuranceService;
 import com.travelinsurance.insurance.services.UserService;
+import com.travelinsurance.insurance.services.VehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,6 +26,9 @@ public class InsuranceController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private VehicleService vehicleService;
+
     @RequestMapping(
             value = "/insurance/save",
             method = RequestMethod.POST,
@@ -36,12 +41,20 @@ public class InsuranceController {
             userService.save(temp);
             insuredUsers.add(temp);
         }
+        Vehicle vehicle = new Vehicle();
+        vehicle.setMark(insurance.getVehicle().getMark());
+        vehicle.setModel(insurance.getVehicle().getModel());
+        vehicle.setPlates(insurance.getVehicle().getPlates());
+        vehicle.setYearOfProduction(insurance.getVehicle().getYearOfProduction());
+        vehicle.setOwner(insurance.getBuyer());
+        vehicle = vehicleService.save(vehicle);
         Insurance i = new Insurance();
         i.setBuyer(user);
         i.setInsuredUsers(insuredUsers);
         i.setFromDate(insurance.getFromDate());
         i.setToDate(insurance.getToDate());
         i.setNumOfPeople(insurance.getNumOfPeople());
+        i.setVehicle(vehicle);
         i.setApproved(false);
         Insurance retValue = insuranceService.save(i);
         return new ResponseEntity<>(retValue, HttpStatus.OK);

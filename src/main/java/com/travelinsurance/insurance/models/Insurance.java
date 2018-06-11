@@ -32,7 +32,9 @@ public class Insurance implements Serializable {
     @JoinColumn
     private Collection<User> insuredUsers;
 
-    //private Vehicle vehicle;
+    @OneToOne
+    @JoinColumn(name = "vehicle_id")
+    private Vehicle vehicle;
 
 
     public Insurance() {
@@ -110,5 +112,13 @@ public class Insurance implements Serializable {
 
     public void setInsuredUsers(Collection<User> insuredUsers) {
         this.insuredUsers = insuredUsers;
+    }
+
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 }
