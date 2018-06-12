@@ -36,6 +36,10 @@ public class Insurance implements Serializable {
     @JoinColumn(name = "vehicle_id")
     private Vehicle vehicle;
 
+    @OneToOne
+    @JoinColumn(name = "destination_id")
+    private Destination destination;
+
 
     public Insurance() {
     }
@@ -120,5 +124,13 @@ public class Insurance implements Serializable {
 
     public void setVehicle(Vehicle vehicle) {
         this.vehicle = vehicle;
+    }
+
+    public Destination getDestination() {
+        return destination;
+    }
+
+    public void setDestination(Destination destination) {
+        this.destination = destination;
     }
 }
