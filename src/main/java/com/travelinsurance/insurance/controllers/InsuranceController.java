@@ -40,26 +40,32 @@ public class InsuranceController {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Insurance> createInsurance (@RequestBody Insurance insurance){
         User user = userService.findByUsername(insurance.getBuyer().getUsername());
-        List<User> insuredUsers = new ArrayList<>();
-        for(User u: insurance.getInsuredUsers()){
-            User temp = new User(u.getName(), u.getSurname(), "INSURED");
-            userService.save(temp);
-            insuredUsers.add(temp);
-        }
-        Vehicle vehicle = new Vehicle();
-        vehicle.setMark(insurance.getVehicle().getMark());
-        vehicle.setModel(insurance.getVehicle().getModel());
-        vehicle.setPlates(insurance.getVehicle().getPlates());
-        vehicle.setYearOfProduction(insurance.getVehicle().getYearOfProduction());
-        vehicle.setOwner(insurance.getBuyer());
-        vehicle = vehicleService.save(vehicle);
         Insurance i = new Insurance();
+        if(insurance.getInsuredUsers()!=null){
+            List<User> insuredUsers = new ArrayList<>();
+
+            for(User u: insurance.getInsuredUsers()){
+                User temp = new User(u.getName(), u.getSurname(), "INSURED");
+                userService.save(temp);
+                insuredUsers.add(temp);
+            }
+            i.setInsuredUsers(insuredUsers);
+        }
+        if(insurance.getVehicle()!=null) {
+            Vehicle vehicle = new Vehicle();
+            vehicle.setMark(insurance.getVehicle().getMark());
+            vehicle.setModel(insurance.getVehicle().getModel());
+            vehicle.setPlates(insurance.getVehicle().getPlates());
+            vehicle.setYearOfProduction(insurance.getVehicle().getYearOfProduction());
+            vehicle.setOwner(insurance.getBuyer());
+            vehicle = vehicleService.save(vehicle);
+            i.setVehicle(vehicle);
+        }
+
         i.setBuyer(user);
-        i.setInsuredUsers(insuredUsers);
         i.setFromDate(insurance.getFromDate());
         i.setToDate(insurance.getToDate());
         i.setNumOfPeople(insurance.getNumOfPeople());
-        i.setVehicle(vehicle);
         i.setApproved(false);
         i.setDestination(insurance.getDestination());
         i.setPrice(insurance.getPrice());

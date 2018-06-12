@@ -23,7 +23,7 @@ public class MailSending {
         try {
             messageHelper = new MimeMessageHelper(message, true);
             messageHelper.setFrom("boxboux@gmail.com");
-            messageHelper.setTo("boxboux@gmail.com");
+            messageHelper.setTo(insurance.getBuyer().getEmail());
             messageHelper.setSubject("Informations about insurance");
             messageHelper.setText(messageText);
             mailSender.send(message);
