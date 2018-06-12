@@ -5,6 +5,8 @@ import com.travelinsurance.insurance.repositories.DestinationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DestinationService {
 
@@ -13,5 +15,9 @@ public class DestinationService {
 
     public Destination save(Destination destination){
         return destinationRepository.save(destination);
+    }
+
+    public List<Destination> getAll() {
+        return destinationRepository.findAll();
     }
 }
