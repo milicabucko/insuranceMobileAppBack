@@ -20,6 +20,8 @@ public class Insurance implements Serializable {
 
     private boolean isApproved;
 
+    private Double price;
+
     @OneToOne
     @JoinColumn(name = "buyer_id")
     private User buyer;
@@ -44,11 +46,12 @@ public class Insurance implements Serializable {
     public Insurance() {
     }
 
-    public Insurance(Date fromDate, Date toDate, int numOfPeople, boolean isApproved, User buyer, User salesman, Collection<User> insuredUsers) {
+    public Insurance(Date fromDate, Date toDate, int numOfPeople, boolean isApproved, Double price, User buyer, User salesman, Collection<User> insuredUsers) {
         this.fromDate = fromDate;
         this.toDate = toDate;
         this.numOfPeople = numOfPeople;
         this.isApproved = isApproved;
+        this.price = price;
         this.buyer = buyer;
         this.salesman = salesman;
         this.insuredUsers = insuredUsers;
@@ -132,5 +135,13 @@ public class Insurance implements Serializable {
 
     public void setDestination(Destination destination) {
         this.destination = destination;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
     }
 }

@@ -34,7 +34,7 @@ public class InsuranceController {
             value = "/insurance/save",
             method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Insurance> registration (@RequestBody Insurance insurance){
+    public ResponseEntity<Insurance> createInsurance (@RequestBody Insurance insurance){
         User user = userService.findByUsername(insurance.getBuyer().getUsername());
         List<User> insuredUsers = new ArrayList<>();
         for(User u: insurance.getInsuredUsers()){
@@ -57,6 +57,8 @@ public class InsuranceController {
         i.setNumOfPeople(insurance.getNumOfPeople());
         i.setVehicle(vehicle);
         i.setApproved(false);
+        i.setDestination(insurance.getDestination());
+        i.setPrice(insurance.getPrice());
         Insurance retValue = insuranceService.save(i);
         return new ResponseEntity<>(retValue, HttpStatus.OK);
     }
