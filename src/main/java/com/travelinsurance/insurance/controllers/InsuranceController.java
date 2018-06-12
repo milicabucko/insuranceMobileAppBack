@@ -2,6 +2,7 @@ package com.travelinsurance.insurance.controllers;
 
 import com.travelinsurance.insurance.dtos.ApproveInsuranceDto;
 import com.travelinsurance.insurance.models.Insurance;
+import com.travelinsurance.insurance.models.MailSending;
 import com.travelinsurance.insurance.models.User;
 import com.travelinsurance.insurance.models.Vehicle;
 import com.travelinsurance.insurance.services.InsuranceService;
@@ -29,6 +30,9 @@ public class InsuranceController {
 
     @Autowired
     private VehicleService vehicleService;
+
+    @Autowired
+    private MailSending mailSending;
 
     @RequestMapping(
             value = "/insurance/save",
@@ -83,9 +87,27 @@ public class InsuranceController {
     public ResponseEntity<Boolean>  approveInsurance(@RequestBody ApproveInsuranceDto approveInsuranceDto){
         Optional<Insurance> insurance = insuranceService.getById(approveInsuranceDto.getId());
         if(insurance != null){
+            String message = "Insurance is approved now. \n\n Insurance buyer: \n " +
+                             "Name: "  + insurance.get().getBuyer().getName() + "\n" +
+                             "Surname: " + insurance.get().getBuyer().getSurname() + "\n" +
+                             "Email: " + insurance.get().getBuyer().getEmail() + "\n" +
+                             "Information about insurance" + "\n" +
+                             "Number of people: " + insurance.get().getNumOfPeople() + "\n" +
+                             "Start date: " + insurance.get().getFromDate() + "\n" +
+                             "End date: " + insurance.get().getToDate() + "\n" +
+                             "Price: " + insurance.get().getPrice();
+            String messageNot = "Unfortunately insurance is not approved.";
             insurance.get().setApproved(approveInsuranceDto.isApprove());
             insurance.get().setSalesman(approveInsuranceDto.getSeller());
-            insuranceService.save(insurance.get());
+            Insurance savedInsurance = insuranceService.save(insurance.get());
+
+            if(approveInsuranceDto.isApprove()){
+                mailSending.sendInsurance(savedInsurance, message);
+            }
+            else{
+                mailSending.sendInsurance(savedInsurance, messageNot);
+            }
+
             return new ResponseEntity<>(true, HttpStatus.OK);
         }
         return new ResponseEntity<>(false, HttpStatus.OK);
